@@ -612,9 +612,6 @@ body {
   width: min(500px, 70vw);
 }
 
-.resumeGameBackBtn {
-}
-
 .resumeGameResumeBtn {
   background-color: #05c6a9;
   color: white;

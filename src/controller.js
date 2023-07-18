@@ -15,7 +15,11 @@ if (localStorage.getItem("game")) {
 
     if (game.player1 !== undefined && game.player2 !== undefined) {
       // Its a two player game
-      if (game.player1.board.ships !== [] && game.player2.board.ships !== []) {
+
+      if (
+        game.player1.board.ships[0] !== undefined &&
+        game.player2.board.ships[0] !== undefined
+      ) {
         // All ships have been placed
 
         // Create new game
@@ -85,7 +89,7 @@ if (localStorage.getItem("game")) {
             });
           }
         }, 1050);
-      } else if (game.player1.board.ships == []) {
+      } else if (game.player1.board.ships[0] == undefined) {
         // No ships have been placed
 
         // Create new game
@@ -102,22 +106,22 @@ if (localStorage.getItem("game")) {
           document.body.removeChild(loadingScreenEl);
         }, 1050);
 
-        console.log("No ships placed");
-
         // Preceed with gamecycle
-        newGame.passScreenDOM(newGame.player1).then(() => {
-          placeShipsDOM(newGame.player1).then(() => {
-            localStorage.setItem("game", JSON.stringify(newGame));
-            newGame.passScreenDOM(newGame.player2).then(() => {
-              placeShipsDOM(newGame.player2).then(() => {
-                localStorage.setItem("game", JSON.stringify(newGame));
-                newGame.passScreenDOM(newGame.player1).then(() => {
-                  newGame.attackCycleDOM(newGame.player1, newGame.player2);
+        setTimeout(() => {
+          newGame.passScreenDOM(newGame.player1).then(() => {
+            placeShipsDOM(newGame.player1).then(() => {
+              localStorage.setItem("game", JSON.stringify(newGame));
+              newGame.passScreenDOM(newGame.player2).then(() => {
+                placeShipsDOM(newGame.player2).then(() => {
+                  localStorage.setItem("game", JSON.stringify(newGame));
+                  newGame.passScreenDOM(newGame.player1).then(() => {
+                    newGame.attackCycleDOM(newGame.player1, newGame.player2);
+                  });
                 });
               });
             });
           });
-        });
+        }, 1050);
       } else {
         // player 1 has placed their ships
 
@@ -146,14 +150,16 @@ if (localStorage.getItem("game")) {
         newGame.player1.board.placeShips(p1ShipCoor);
 
         // Preceed with gamecycle
-        newGame.passScreenDOM(newGame.player2).then(() => {
-          placeShipsDOM(newGame.player2).then(() => {
-            localStorage.setItem("game", JSON.stringify(newGame));
-            newGame.passScreenDOM(newGame.player1).then(() => {
-              newGame.attackCycleDOM(newGame.player1, newGame.player2);
+        setTimeout(() => {
+          newGame.passScreenDOM(newGame.player2).then(() => {
+            placeShipsDOM(newGame.player2).then(() => {
+              localStorage.setItem("game", JSON.stringify(newGame));
+              newGame.passScreenDOM(newGame.player1).then(() => {
+                newGame.attackCycleDOM(newGame.player1, newGame.player2);
+              });
             });
           });
-        });
+        }, 1050);
       }
     } else {
       // Its an AI game
@@ -210,7 +216,9 @@ if (localStorage.getItem("game")) {
         document.body.removeChild(loadingScreenEl);
       }, 1050);
 
-      newGame.displayGameDom();
+      setTimeout(() => {
+        newGame.displayGameDom();
+      }, 1050);
     }
   });
 }

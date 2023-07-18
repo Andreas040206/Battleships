@@ -13,12 +13,31 @@ import ship from "./app/ships";
 import passDeviceImageSrc from "./images/passDeviceSrc.png";
 import settingIconSrc from "./images/settingsIconSrc.svg";
 import backArrowIconSrc from "./images/backArrowIconSrc.svg";
-import { add } from "lodash";
 
 let masterVolume = 0.5;
 
 let musicVolume = 1;
 let SFXVolume = 1;
+
+// Check localstorage for audio data
+if (localStorage.getItem("audioVolume")) {
+  // There is data
+  const audioObj = JSON.parse(localStorage.getItem("audioVolume"));
+
+  // Set current volume
+  masterVolume = audioObj.masterVolume;
+  musicVolume = audioObj.musicVolume;
+  SFXVolume = audioObj.SFXVolume;
+}
+
+const saveAudioToStorage = () => {
+  const audioObj = {
+    masterVolume: masterVolume,
+    musicVolume: musicVolume,
+    SFXVolume: SFXVolume,
+  };
+  localStorage.setItem("audioVolume", JSON.stringify(audioObj));
+};
 
 const battleMusic = new Audio(battleMusicSrc);
 battleMusic.loop = true;
@@ -1136,14 +1155,30 @@ const settingsDOM = () => {
       sliderMasterValue.textContent = `${sliderMaster.value}%`;
 
       sliderMaster.addEventListener("mousemove", () => {
+        // Change valueble text
         sliderMasterValue.textContent = `${sliderMaster.value}%`;
+
+        // Change global volume value
         masterVolume = sliderMaster.value / 100;
+
+        // Set storage
+        saveAudioToStorage();
+
+        // Make sure all playing audio change volume
         changeVolume();
       });
 
       sliderMaster.addEventListener("change", () => {
+        // Change valueble text
         sliderMasterValue.textContent = `${sliderMaster.value}%`;
-        masterVolume = sliderSFX.value / 100;
+
+        // Change global volume value
+        masterVolume = sliderMaster.value / 100;
+
+        // Set storage
+        saveAudioToStorage();
+
+        // Make sure all playing audio change volume
         changeVolume();
       });
 
@@ -1174,14 +1209,30 @@ const settingsDOM = () => {
       sliderMusicValue.textContent = `${sliderMusic.value}%`;
 
       sliderMusic.addEventListener("mousemove", () => {
+        // Change valueble text
         sliderMusicValue.textContent = `${sliderMusic.value}%`;
+
+        // Change global volume value
         musicVolume = sliderMusic.value / 100;
+
+        // Set storage
+        saveAudioToStorage();
+
+        // Make sure all playing audio change volume
         changeVolume();
       });
 
       sliderMusic.addEventListener("change", () => {
+        // Change valueble text
         sliderMusicValue.textContent = `${sliderMusic.value}%`;
+
+        // Change global volume value
         musicVolume = sliderMusic.value / 100;
+
+        // Set storage
+        saveAudioToStorage();
+
+        // Make sure all playing audio change volume
         changeVolume();
       });
 
@@ -1212,16 +1263,31 @@ const settingsDOM = () => {
       sliderSFXValue.textContent = `${sliderSFX.value}%`;
 
       sliderSFX.addEventListener("mousemove", () => {
+        // Change valueble te
         sliderSFXValue.textContent = `${sliderSFX.value}%`;
+
+        // Change global volume value
         SFXVolume = sliderSFX.value / 100;
+
+        // Set storage
+        saveAudioToStorage();
+
+        // Make sure all playing audio change volume
         changeVolume();
       });
 
       sliderSFX.addEventListener("change", () => {
+        // Change valueble te
         sliderSFXValue.textContent = `${sliderSFX.value}%`;
+
+        // Change global volume value
         SFXVolume = sliderSFX.value / 100;
+
+        // Set storage
+        saveAudioToStorage();
+
+        // Make sure all playing audio change volume
         changeVolume();
-        playButtonShiftSound();
       });
 
       sliderMiniConSFX.appendChild(sliderSFX);
